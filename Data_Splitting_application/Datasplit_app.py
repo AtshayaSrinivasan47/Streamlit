@@ -10,13 +10,13 @@ def count_features(df):
     return len(df.columns)
 
 #function to split dataset
-def split_data(df, test_size=0.2):
+def split_data(df, test_size):
     train,test=train_test_split(df,test_size=test_size)
     train_percentage=len(train)/len(df)*100
     test_percentage=len(test)/len(df)*100
     return train, test, train_percentage,test_percentage
 
-def federated_split(df,num_nodes,test_size=0.2):
+def federated_split(df,num_nodes,test_size):
     node_splits=[]
     for _ in range(num_nodes):
         train,test=train_test_split(df,test_size=test_size)
@@ -65,7 +65,7 @@ if uploaded_file is not None:
     # Federated learning data split
     if st.button("Federated_learning_Data split"):
         st.header("Federated Learning Data split")
-        num_nodes=st.slider('num_of_nodes', min_values=1, value=3)
+        num_nodes=st.slider('num_of_nodes', min_value=1, value=3)
         test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2)
         if st.button("Split_data"):
             node_splits=federated_split(df,num_nodes,test_size)
