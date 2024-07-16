@@ -55,7 +55,7 @@ if uploaded_file is not None:
     
     # Training and testing data split
     st.header("Train and test Data Split")
-    test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2)
+    test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2,key='train_test_split_slider')
     if st.button("Split Data"):
         train, test, train_percentage, test_percentage = split_data(df, test_size)
         st.write(f"Training data : {train_percentage:0.2f}%")
@@ -67,8 +67,8 @@ if uploaded_file is not None:
     
     # Federated learning data split
     st.header("Federated Learning Data split")
-    num_nodes=st.slider('num_of_nodes', min_value=1, value=3)
-    test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2)
+    num_nodes=st.slider('num_of_nodes', min_value=1, max_value=10, value=3,key='number of nodes slider')
+    test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2, key=' test data size)
     if st.button("Split_data"):
         node_splits=federated_split(df,num_nodes,test_size)
         for i, nodes in enumerate(node_splits):
