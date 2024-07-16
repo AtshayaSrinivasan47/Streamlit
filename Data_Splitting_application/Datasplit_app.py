@@ -71,7 +71,7 @@ if uploaded_file is not None:
     
     # Federated learning data split
     st.header("Federated Learning Data split")
-    num_nodes=st.slider('num_of_nodes', min_value=1,max_value=10 value=3, key='number of nodes')
+    num_nodes=st.slider('num_of_nodes', min_value=1,max_value=10, value=3, key='number of nodes')
     test_size=st.slider('Test_size (0-1)',0.0,0.5,0.2, key='test_size_slider_Federated')
     if st.button("Split_data"):
         node_splits=federated_split(df,num_nodes,test_size)
