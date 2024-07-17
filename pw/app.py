@@ -57,7 +57,7 @@ for posts in blog_posts:
     with st.container():
         st.subheader(posts["title"])
         st.write(posts["description"])
-        st.markdown(f"[Read more]({posts["link"]})")
+        st.markdown(f"[Read more]({posts['link']})")
 
 # Linkedin section
 st.header("Linkedin")
