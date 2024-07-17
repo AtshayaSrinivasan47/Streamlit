@@ -1,7 +1,7 @@
 import streamlit as st 
 
 # setting title of the page
-st.set_page_config(page_title="Atshaya Srinivasan - Personal Website", layout="Wide")
+st.set_page_config(page_title="Atshaya Srinivasan - Personal Website", layout="wide")
 
 
 # sidebar navigation
