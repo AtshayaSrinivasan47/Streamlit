@@ -19,8 +19,8 @@ def stratified_split(data, n_split):
   return data_splits
 
 def analyse_split(split, original_data):
-  st.write(f"Client{i+1} data shape:", split.shape)
-  st.write(f"Client{1+1} data distribution:\n",split["Type of attack"].value_counts())
+  st.write(f"Client{1+i} data shape:", split.shape)
+  st.write(f"Client{1+i} data distribution:\n",split["Type of attack"].value_counts())
 
   # visualise class distribution
   fig,ax=plt.subplots()
