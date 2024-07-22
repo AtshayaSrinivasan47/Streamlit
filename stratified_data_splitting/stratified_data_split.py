@@ -13,8 +13,9 @@ def stratified_split(data, n_split):
   data_splits=[]
   remaining_data=data
   for i in range(n_split-1):
-    split, remaining_data=train_test_split(remaining_data, test_size=0.2, stratify=remaining_data['Type of attack'])
+    split, remaining_data=train_test_split(remaining_data, test_size=1/n_split, stratify=remaining_data['Type of attack'])
     data_splits.append(split)
+  data_splits.append(remaining_data)
   return data_Splits
 
 def analyse_split(split, original_data):
