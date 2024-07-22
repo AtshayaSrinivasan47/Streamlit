@@ -18,30 +18,30 @@ def stratified_split(data, n_split):
   data_splits.append(remaining_data)
   return data_splits
 
-def analyse_split(split, original_data):
-  st.write(f"Client{1+i} data shape:", split.shape)
-  st.write(f"Client{1+i} data distribution:\n",split["Type of attack"].value_counts())
+def analyze_splits(split, original_data):
+  st.write(f"Client{i+1} data shape:", split.shape)
+  st.write(f"Client{i+1} data distribution:\n",split["Type of attack"].value_counts())
 
   # visualise class distribution
   fig,ax=plt.subplots()
   split["Type of attack"].value_counts().plot(kind='bar',ax=ax)
-  ax.set_title(f'Client{1+i} class distribution')
+  ax.set_title(f'Client{i+1} class distribution')
   st.pyplot(fig)
 
   # statsistical summary
-  st.write(f"Client{1+i} statistical summary")
-  st.write(split.discribe())
+  st.write(f"Client{i+1} statistical summary")
+  st.write(split.describe())
 
   #visualise feature distribution
   numerical_features=split.select_dtypes(include=['int64','float64']).columns
   for feature in numerical_features:
     fig, ax=plt.subplots()
     sns.histplot(split[feature],kde=True,ax=ax)
-    ax.set_title(f'Client{1+i} {feature} distribution')
+    ax.set_title(f'Client{i+1} {feature} distribution')
     st.pyplot(fig)
 
   # check for missing value
-  st.write(f"Client {1+i} Missing Values")
+  st.write(f"Client {i+1} Missing Values")
   st.write(split.isnull().sum())
 
 # streamlit app
@@ -62,11 +62,11 @@ def main():
     if st.button("Perform stratified split"):
       splits= stratified_split(data,n_split)
       for i, split in enumerate(splits):
-        split_file_path=f"client{1+i}_data.xlsx"
+        split_file_path=f"client_{i+1}_data.xlsx"
         split.to_excel(split_file_path, index=False)
-        st.write(f"Client{i+1} data saved to split_file_path")
+        st.write(f"Client{i+1} data saved to {split_file_path}")
 
-      analyse_split(splits, data)
+      analyze_splits(splits, data)
 
 if __name__=="__main__":
   main()
