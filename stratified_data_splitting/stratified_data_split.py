@@ -54,7 +54,7 @@ def main():
 
   if upload_file is not None:
     data=load_data(upload_file)
-    st.write("Data Shape:", data.shape())
+    st.write("Data Shape:", data.shape)
     st.write("Class distribution:",data["Type of attack"].value_counts())
 
     n_split=st.number_input("Enter the number of splits:",min_value=2,max_value=10, value=3)
