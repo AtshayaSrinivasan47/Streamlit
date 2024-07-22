@@ -45,16 +45,15 @@ def analyze_splits(splits, original_data):
     st.write(f"Client {i+1} Missing Values")
     st.write(split.isnull().sum())
 
-    # Provide download link for the split file
-        buffer = BytesIO()
-        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-            split.to_excel(writer, index=False, sheet_name='Sheet1')
-        st.download_button(
+  # Provide download link for the split file
+    buffer = BytesIO()
+    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+    split.to_excel(writer, index=False, sheet_name='Sheet1')
+    st.download_button(
             label=f"Download Client {i+1} data as Excel",
             data=buffer,
             file_name=f"client_{i+1}_data.xlsx",
-            mime="application/vnd.ms-excel"
-        )
+            mime="application/vnd.ms-excel")
 
 # streamlit app
 
