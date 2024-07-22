@@ -10,13 +10,13 @@ def load_data(upload_file):
   return data
 
 def stratified_split(data, n_split):
-  data_split=[]
+  data_splits=[]
   remaining_data=data
   for i in range(n_split-1):
     split, remaining_data=train_test_split(remaining_data, test_size=0.2, stratify=remaining_data['Type of attack'])
-    data_split.append(split)
-  data_split.append(remaining_data) # append the remaining data as the last split
-  return data_Split
+    data_splits.append(split)
+  data_splits.append(remaining_data) # append the remaining data as the last split
+  return data_Splits
 
 def analyse_split(split, original_data):
   st.write(f"Client{i+1} data shape:", split.shape)
