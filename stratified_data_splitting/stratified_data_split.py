@@ -18,31 +18,32 @@ def stratified_split(data, n_split):
   data_splits.append(remaining_data)
   return data_splits
 
-def analyze_splits(split, original_data):
-  st.write(f"Client{i+1} data shape:", split.shape)
-  st.write(f"Client{i+1} data distribution:\n",split["Type of attack"].value_counts())
+def analyze_splits(splits, original_data):
+  for i, split in  enumerate(splits):
+    st.write(f"Client{i+1} data shape:", split.shape)
+    st.write(f"Client{i+1} data distribution:\n",split["Type of attack"].value_counts())
 
-  # visualise class distribution
-  fig,ax=plt.subplots()
-  split["Type of attack"].value_counts().plot(kind='bar',ax=ax)
-  ax.set_title(f'Client{i+1} class distribution')
-  st.pyplot(fig)
-
-  # statsistical summary
-  st.write(f"Client{i+1} statistical summary")
-  st.write(split.describe())
-
-  #visualise feature distribution
-  numerical_features=split.select_dtypes(include=['int64','float64']).columns
-  for feature in numerical_features:
-    fig, ax=plt.subplots()
-    sns.histplot(split[feature],kde=True,ax=ax)
-    ax.set_title(f'Client{i+1} {feature} distribution')
+    # visualise class distribution
+    fig,ax=plt.subplots()
+    split["Type of attack"].value_counts().plot(kind='bar',ax=ax)
+    ax.set_title(f'Client{i+1} class distribution')
     st.pyplot(fig)
-
-  # check for missing value
-  st.write(f"Client {i+1} Missing Values")
-  st.write(split.isnull().sum())
+  
+    # statsistical summary
+    st.write(f"Client{i+1} statistical summary")
+    st.write(split.describe())
+  
+    #visualise feature distribution
+    numerical_features=split.select_dtypes(include=['int64','float64']).columns
+    for feature in numerical_features:
+      fig, ax=plt.subplots()
+      sns.histplot(split[feature],kde=True,ax=ax)
+      ax.set_title(f'Client{i+1} {feature} distribution')
+      st.pyplot(fig)
+  
+    # check for missing value
+    st.write(f"Client {i+1} Missing Values")
+    st.write(split.isnull().sum())
 
 # streamlit app
 
