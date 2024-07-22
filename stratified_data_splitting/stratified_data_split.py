@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
+from io import BytesIO
 
 # load dataset
 def load_data(upload_file):
@@ -51,7 +52,7 @@ def analyze_splits(splits, original_data):
       split.to_excel(writer, index=False, sheet_name='Sheet1')
     st.download_button(
        label=f"Download Client {i+1} data as Excel",
-       data=buffer,
+       data=buffer.getvalue(),
        file_name=f"client_{i+1}_data.xlsx",
        mime="application/vnd.ms-excel")
 
