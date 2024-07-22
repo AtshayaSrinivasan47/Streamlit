@@ -63,7 +63,7 @@ def main():
       splits= stratified_split(data,n_split)
       for i, split in enumerate(splits):
         split_file_path=f"client{1+i}_data.xlsx"
-        split_to_excel(split_file_path, index=False)
+        split.to_excel(split_file_path, index=False)
         st.write(f"Client{i+1} data saved to split_file_path")
 
       analyse_split(splits, data)
