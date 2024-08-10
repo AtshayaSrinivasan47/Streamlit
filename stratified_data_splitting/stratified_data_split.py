@@ -11,13 +11,23 @@ def load_data(upload_file):
   return data
 
 def stratified_split(data, n_split):
-  data_splits=[]
-  remaining_data=data
-  for i in range(n_split-1):
-    split, remaining_data=train_test_split(remaining_data, test_size=1/n_split, stratify=remaining_data['Type of attack'])
-    data_splits.append(split)
+  # Hold out 10% of the data for global model testing
+  train_data, test_data = train_test_split(
+        data, test_size=0.1, stratify=data['Type of attack'], random_state=42
+    )
+  # Remaining data for client splits
+  remaining_data = train_data
+  data_splits = []
+
+  for i in range(n_split - 1):
+      split, remaining_data = train_test_split(
+          remaining_data, test_size=1/(n_split - i), stratify=remaining_data['Type of attack'], random_state=42
+        )
+       data_splits.append(split)
+
   data_splits.append(remaining_data)
-  return data_splits
+
+  return data_splits, test_data
 
 def analyze_splits(splits, original_data):
   for i, split in  enumerate(splits):
@@ -55,6 +65,39 @@ def analyze_splits(splits, original_data):
        data=buffer.getvalue(),
        file_name=f"client_{i+1}_data.xlsx",
        mime="application/vnd.ms-excel")
+# Analyze the global test set
+  st.write("Global model test data shape:", test_data.shape)
+  st.write("Global model test data distribution:\n", test_data["Type of attack"].value_counts())
+
+  fig, ax = plt.subplots()
+  test_data["Type of attack"].value_counts().plot(kind='bar', ax=ax)
+  ax.set_title('Global model test data class distribution')
+  st.pyplot(fig)
+
+  # Statistical summary for the global test set
+  st.write("Global model test data statistical summary")
+  st.write(test_data.describe())
+
+  # Visualize feature distribution for the global test set
+  for feature in numerical_features:
+      fig, ax = plt.subplots()
+      sns.histplot(test_data[feature], kde=True, ax=ax)
+      ax.set_title(f'Global model test data {feature} distribution')
+      st.pyplot(fig)
+  # Check for missing values in the global test set
+  st.write("Global model test data Missing Values")
+  st.write(test_data.isnull().sum())
+
+  # Provide download link for the global test data
+  buffer = BytesIO()
+  with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+      test_data.to_excel(writer, index=False, sheet_name='Sheet1')
+  st.download_button(
+      label="Download Global model test data as Excel",
+      data=buffer.getvalue(),
+      file_name="global_test_data.xlsx",
+      mime="application/vnd.ms-excel"
+  )
 
 # streamlit app
 
