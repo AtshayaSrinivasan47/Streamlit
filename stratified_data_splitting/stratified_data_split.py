@@ -124,7 +124,7 @@ def main():
                 split.to_excel(split_file_path, index=False)
                 st.write(f"Client {i+1} data saved to {split_file_path}")
 
-            analyze_splits(splits, test_data, data)
+            analyze_splits(splits, test_data)
 
 if __name__ == "__main__":
     main()
