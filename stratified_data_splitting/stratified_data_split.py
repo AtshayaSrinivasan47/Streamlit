@@ -23,7 +23,7 @@ def stratified_split(data, n_split):
       split, remaining_data = train_test_split(
           remaining_data, test_size=1/(n_split - i), stratify=remaining_data['Type of attack'], random_state=42
         )
-       data_splits.append(split)
+      data_splits.append(split)
 
   data_splits.append(remaining_data)
 
