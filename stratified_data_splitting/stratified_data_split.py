@@ -30,7 +30,8 @@ def stratified_split(data, n_split):
   return data_splits, test_data
 
 # Analyze splits
-def analyze_splits(splits, test_data, original_data):
+def analyze_splits(splits, test_data):
+    buffers = []
     for i, split in enumerate(splits):
         st.write(f"Client {i+1} data shape:", split.shape)
         st.write(f"Client {i+1} data distribution:\n", split["Type of attack"].value_counts())
@@ -57,16 +58,11 @@ def analyze_splits(splits, test_data, original_data):
         st.write(f"Client {i+1} Missing Values")
         st.write(split.isnull().sum())
 
-        # Provide download link for the split file
+        # Prepare download link for the split file
         buffer = BytesIO()
         with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
             split.to_excel(writer, index=False, sheet_name='Sheet1')
-        st.download_button(
-            label=f"Download Client {i+1} data as Excel",
-            data=buffer.getvalue(),
-            file_name=f"client_{i+1}_data.xlsx",
-            mime="application/vnd.ms-excel"
-        )
+        buffers.append((f"Download Client {i+1} data as Excel", buffer))
 
     # Analyze the global test set
     st.write("Global model test data shape:", test_data.shape)
@@ -92,17 +88,20 @@ def analyze_splits(splits, test_data, original_data):
     st.write("Global model test data Missing Values")
     st.write(test_data.isnull().sum())
 
-    # Provide download link for the global test data
+    # Prepare download link for the global test data
     buffer = BytesIO()
     with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
         test_data.to_excel(writer, index=False, sheet_name='Sheet1')
-    st.download_button(
-        label="Download Global model test data as Excel",
-        data=buffer.getvalue(),
-        file_name="global_test_data.xlsx",
-        mime="application/vnd.ms-excel"
-    )
-# streamlit app
+    buffers.append(("Download Global model test data as Excel", buffer))
+
+    # Provide all download links
+    for label, buffer in buffers:
+        st.download_button(
+            label=label,
+            data=buffer.getvalue(),
+            file_name=f"{label.split()[1].lower()}_data.xlsx",
+            mime="application/vnd.ms-excel"
+        )
 
 # Streamlit app
 def main():
