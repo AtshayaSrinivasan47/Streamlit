@@ -13,7 +13,7 @@ def load_data(upload_file):
 def stratified_split(data, n_split):
   # Hold out 10% of the data for global model testing
   train_data, test_data = train_test_split(
-        data, test_size=0.1, stratify=data['Type of attack'], random_state=42
+        data, test_size=0.1, stratify=data['Type of attack'], random_state=seed
     )
   # Remaining data for client splits
   remaining_data = train_data
